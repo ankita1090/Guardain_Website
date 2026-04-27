@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  :root { --purple: #7c3aed; --purple2: #4f46e5; --dark: #0a0a18; --dark2: #0f0f22; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 85vh;
+    background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(124,58,237,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 50% at 20% 80%, rgba(79,70,229,0.12) 0%, transparent 60%),
+                linear-gradient(160deg, #0a0a18 0%, #0e0b24 50%, #0a0a18 100%);
+    display: flex; align-items: center;
+    padding: 100px 32px 60px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events:none;
+  }
+  .hero-inner { max-width:1200px; margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between; gap:48px; flex-wrap:wrap; }
+  .hero-left { flex:1; min-width:280px; }
+  .hero-badge { display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);border-radius:20px;padding:5px 14px;font-size:13px;color:#a78bfa;margin-bottom:24px; }
+  .hero-title { font-size:clamp(38px,5.5vw,68px); font-weight:800; line-height:1.1; letter-spacing:-2px; margin-bottom:20px; }
+  .hero-title span { background:linear-gradient(135deg,#7c3aed,#818cf8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { font-size:17px; color:rgba(255,255,255,0.6); line-height:1.7; margin-bottom:36px; max-width:460px; }
+  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:40px; }
+  .btn-primary-g { background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;padding:13px 28px;border-radius:30px;font-size:15px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform 0.2s,opacity 0.2s; }
+  .btn-primary-g:hover { transform:translateY(-2px);opacity:0.9;color:#fff; }
+  .btn-outline-g { background:transparent;color:#fff;padding:13px 28px;border-radius:30px;font-size:15px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:8px;transition:border-color 0.2s,background 0.2s; }
+  .btn-outline-g:hover { border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.05);color:#fff; }
+  .hero-trust { display:flex;align-items:center;gap:12px; }
+  .trust-avatars { display:flex; }
+  .trust-avatars span { width:34px;height:34px;border-radius:50%;border:2px solid #0a0a18;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-left:-8px; }
+  .trust-avatars span:first-child { margin-left:0; }
+  .trust-text { font-size:13px;color:rgba(255,255,255,0.5); }
+  .trust-text strong { color:#fff; }
+  .stars { color:#f59e0b;font-size:12px;letter-spacing:1px; }
+
+  .hero-right { flex:1; min-width:300px; display:flex; justify-content:center; position:relative; }
+  .phone-mockup { max-width:340px; width:100%; filter:drop-shadow(0 30px 80px rgba(124,58,237,0.5)); animation:float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+
+  /* ── FEATURES ── */
+  .features-section { background:#fff; padding:80px 32px; border-radius:48px 48px 0 0; margin-top:-30px; }
+  .section-label { font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple);margin-bottom:12px; }
+  .section-title { font-size:clamp(28px,4vw,42px);font-weight:800;color:#0a0a18;line-height:1.2;letter-spacing:-1px; }
+  .section-title span { color:var(--purple); }
+  .feature-card { background:#fff;border:1px solid #f0f0f0;border-radius:20px;padding:32px 24px;transition:transform 0.25s,box-shadow 0.25s; }
+  .feature-card:hover { transform:translateY(-6px);box-shadow:0 20px 50px rgba(124,58,237,0.12); }
+  .feat-icon { width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px; }
+  .feat-title { font-size:17px;font-weight:700;color:#0a0a18;margin-bottom:8px; }
+  .feat-desc { font-size:14px;color:#6b7280;line-height:1.6; }
+
+  /* ── SCREENSHOTS ── */
+  .screenshots-section { background:#f8f7ff;padding:80px 32px; }
+  .phone-frame { border-radius:24px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.15);transition:transform 0.3s; }
+  .phone-frame:hover { transform:translateY(-8px); }
+  .phone-frame img { width:100%;display:block;height:260px;object-fit:cover; }
+
+  /* ── HOW TO USE ── */
+  .howto-section { background:#0a0a18;padding:80px 32px; }
+  .howto-inner { max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:60px;flex-wrap:wrap; }
+  .video-wrap { flex:0 0 280px;max-width:280px; }
+  .video-container { background:#1a1a2e;border-radius:28px;padding:12px;box-shadow:0 20px 60px rgba(124,58,237,0.3); }
+  .video-container video { width:100%;border-radius:18px;display:block; }
+  .video-label { text-align:center;font-size:12px;color:rgba(255,255,255,0.3);margin-top:10px;font-style:italic; }
+  .howto-content { flex:1;min-width:280px; }
+  .step { margin-bottom:32px; }
+  .step-num { font-size:13px;font-weight:700;color:#7c3aed;letter-spacing:1px;margin-bottom:6px; }
+  .step-title { font-size:19px;font-weight:700;color:#fff;margin-bottom:8px; }
+  .step-desc { font-size:15px;color:rgba(255,255,255,0.55);line-height:1.7; }
+  .doc-btn { display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(124,58,237,0.5);color:#a78bfa;padding:11px 24px;border-radius:25px;text-decoration:none;font-size:14px;font-weight:600;transition:background 0.2s,border-color 0.2s; }
+  .doc-btn:hover { background:rgba(124,58,237,0.1);border-color:#7c3aed;color:#a78bfa; }
+
+  /* ── STATS ── */
+  .stats-section { background:linear-gradient(135deg,#6d28d9,#4338ca);padding:50px 32px; }
+  .stats-inner { max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;text-align:center; }
+  .stat-item { display:flex;flex-direction:column;align-items:center;gap:6px; }
+  .stat-icon { font-size:28px;margin-bottom:4px; }
+  .stat-num { font-size:34px;font-weight:800;color:#fff; }
+  .stat-label { font-size:14px;color:rgba(255,255,255,0.7); }
+
+  /* ── CTA ── */
+  .cta-section { background:#f8f7ff;padding:70px 32px; }
+  .cta-box { max-width:900px;margin:0 auto;background:#fff;border-radius:28px;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;box-shadow:0 10px 50px rgba(0,0,0,0.08); }
+  .cta-shield { width:80px;height:80px;background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(79,70,229,0.1));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:38px;flex-shrink:0; }
+  .cta-text { flex:1;min-width:200px; }
+  .cta-title { font-size:26px;font-weight:800;color:#0a0a18;margin-bottom:8px;letter-spacing:-0.5px; }
+  .cta-sub { font-size:15px;color:#6b7280; }
+  .cta-right { display:flex;flex-direction:column;align-items:flex-end;gap:8px; }
+  .cta-note { font-size:12px;color:#9ca3af; }
+
+  /* ── FOOTER ── */
+  .footer { background:#050510;padding:60px 32px 30px; }
+  .footer-inner { max-width:1200px;margin:0 auto; }
+  .footer-grid { display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:40px;margin-bottom:48px; }
+  .footer-brand { display:flex;align-items:center;gap:8px;margin-bottom:14px; }
+  .footer-brand-icon { width:28px;height:28px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff; }
+  .footer-brand-name { font-weight:800;font-size:16px;color:#fff; }
+  .footer-brand-name span { color:#7c3aed; }
+  .footer-desc { font-size:14px;color:rgba(255,255,255,0.4);line-height:1.7;margin-bottom:20px; }
+  .footer-socials { display:flex;gap:12px; }
+  .social-icon { width:34px;height:34px;background:rgba(255,255,255,0.06);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:background 0.2s; }
+  .social-icon:hover { background:rgba(124,58,237,0.3); }
+  .footer-col-title { font-size:13px;font-weight:700;color:#fff;margin-bottom:16px;letter-spacing:0.5px; }
+  .footer-links { list-style:none; }
+  .footer-links li { margin-bottom:10px; }
+  .footer-links a { font-size:14px;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.2s; }
+  .footer-links a:hover { color:#7c3aed; }
+  .footer-contact-item { font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:8px; }
+  .footer-divider { border:none;border-top:1px solid rgba(255,255,255,0.07);margin:0 0 24px; }
+  .footer-bottom { text-align:center;font-size:13px;color:rgba(255,255,255,0.25); }
+
+  @media(max-width:768px) {
+    .footer-grid { grid-template-columns:1fr 1fr; }
+    .howto-inner { flex-direction:column; }
+    .video-wrap { max-width:100%; }
+    .cta-box { flex-direction:column;text-align:center; }
+    .cta-right { align-items:center; }
+  }
+  @media(max-width:480px) {
+    .footer-grid { grid-template-columns:1fr; }
+  }
+</style>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">🛡️ Personal Safety Companion</div>
+      <h1 class="hero-title">Your Safety,<br><span>Our Priority.</span></h1>
+      <p class="hero-sub">Guardian+ is your personal safety companion.<br>Stay protected. Stay informed. Stay one step ahead.</p>
+      <div class="hero-btns">
+        <a href="{% static 'apk/app-debug.apk' %}" download class="btn-primary-g">⬇ Download APK</a>
+        <a href="#features" class="btn-outline-g">Learn More →</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-avatars">
+          <span>A</span><span>B</span><span>C</span>
+        </div>
+        <!-- <div>
+          <div class="stars">★★★★★</div>
+          <div class="trust-text">Trusted by <strong>10,000+</strong> users</div>
+        </div> -->
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="{% static 'images/preview.jpeg' %}" class="phone-mockup" alt="Guardian+ App Preview">
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FEATURES ══════════════════ -->
+<section class="features-section" id="features">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:56px;">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you need,<br>when it <span>matters</span> most</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;">
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(124,58,237,0.1);">📍</div>
+        <div class="feat-title">Live Tracking</div>
+        <p class="feat-desc">Share your real-time location with your trusted ones anytime, anywhere.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(239,68,68,0.1);">🔔</div>
+        <div class="feat-title">Emergency SOS</div>
+        <p class="feat-desc">Send instant alerts to your emergency contacts with a single tap.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(59,130,246,0.1);">🛡️</div>
+        <div class="feat-title">Secure & Private</div>
+        <p class="feat-desc">Your data is encrypted end-to-end and always protected.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(16,185,129,0.1);">🔋</div>
+        <div class="feat-title">Auto Recording</div>
+        <p class="feat-desc">Record things in emergency.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SCREENSHOTS ══════════════════ -->
+<section class="screenshots-section" id="previews">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="section-label">App Preview</div>
+      <h2 class="section-title" style="color:#0a0a18;">Simple. <span>Powerful.</span> Reliable.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;">
+      <div class="phone-frame"><img src="{% static 'images/login_page.png' %}" alt="Login"></div>
+      <div class="phone-frame"><img src="{% static 'images/Home_page.jpeg' %}" alt="Home"></div>
+      <div class="phone-frame"><img src="{% static 'images/permission_page.jpeg' %}" alt="Permissions"></div>
+      <div class="phone-frame"><img src="{% static 'images/Help_page.jpeg' %}" alt="Help"></div>
+      <div class="phone-frame"><img src="{% static 'images/Working _page.jpeg' %}" alt="Working"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HOW TO USE ══════════════════ -->
+<section class="howto-section" id="about">
+  <div class="howto-inner">
+    <div class="video-wrap">
+      <div class="video-container">
+        <video controls>
+          <source src="{% static 'video/app_video.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-label">Guardian+ App Preview</div>
+    </div>
+    <div class="howto-content">
+      <div class="section-label" style="color:#7c3aed;">How To Use</div>
+      <h2 style="font-size:clamp(26px,3.5vw,38px);font-weight:800;color:#fff;margin-bottom:32px;letter-spacing:-0.5px;">How to Use <span style="color:#7c3aed;">Guardian+</span></h2>
+      <div class="step">
+        <div class="step-num">STEP 01</div>
+        <div class="step-title">Trigger SOS Instantly</div>
+        <p class="step-desc">Agar aap mushkil mein hain, toh bas SOS button par tap karein. App turant aapki location aur alerts aapke trusted contacts ko bhej degi.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 02</div>
+        <div class="step-title">Active Guardian Mode</div>
+        <p class="step-desc">Background tracking on karein taaki aapka safar hamesha monitored rahe. Yeh mode sensors ka use karke unusual activity detect karta hai.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 03</div>
+        <div class="step-title">Share Live Location</div>
+        <p class="step-desc">Apne trusted contacts ke saath real-time location share karein. Woh hamesha jaante rahenge aap kahan hain.</p>
+      </div>
+      <a href="{% url 'documentation' %}" class="doc-btn">Read Full Documentation →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ STATS ══════════════════ -->
+<section class="stats-section">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-icon">👥</div>
+      <div class="stat-num">10K+</div>
+      <div class="stat-label">Happy Users</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Secure</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Always Ready</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">⭐</div>
+      <div class="stat-num">4.8</div>
+      <div class="stat-label">User Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA ══════════════════ -->
+<section class="cta-section">
+  <div class="cta-box">
+    <div class="cta-shield">🛡️</div>
+    <div class="cta-text">
+      <div class="cta-title">Ready to protect what matters?</div>
+      <p class="cta-sub">Download Guardian+ now and experience the power of safety in your hands.</p>
+    </div>
+    <div class="cta-right">
+      <a href="{% static 'apk/app-debug.apk' %}" download class="btn-primary-g" style="font-size:15px;">⬇ Download Guardian+ APK</a>
+      <span class="cta-note">Android 6.0 and above</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="footer" id="contact">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <div class="footer-brand-icon">+</div>
+          <div class="footer-brand-name">Guardian<span>+</span></div>
+        </div>
+        <p class="footer-desc">Your personal safety companion. Stay protected. Stay connected.</p>
+        <div class="footer-socials">
+          <div class="social-icon">f</div>
+          <div class="social-icon">t</div>
+          <div class="social-icon">in</div>
+          <div class="social-icon">✉</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#previews">Screenshots</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <ul class="footer-links">
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Help Center</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact Us</div>
+        <p class="footer-contact-item">careerguardianapp@gmail.com</p>
+        <p class="footer-contact-item"></p>
+        <p class="footer-contact-item">India</p>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">© 2026 Guardian+. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', function() {
+    var nav = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+      nav.style.background = 'rgba(10,10,24,0.97)';
+      nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.5)';
+    } else {
+      nav.style.background = 'rgba(10,10,24,0.0)';
+      nav.style.boxShadow = 'none';
+    }
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var id = this.getAttribute('href');
+      if (!id || id === '#') return;
+      var target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+{% endblock %}

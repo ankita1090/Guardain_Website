@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    :root { 
+        --purple: #7c3aed; 
+        --dark: #0a0a18; 
+        --text-muted: rgba(255,255,255,0.6); 
+    }
+
+    .doc-container {
+        background: var(--dark);
+        color: #fff;
+        padding: 120px 20px 80px;
+        min-height: 100vh;
+    }
+
+    .doc-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .doc-header {
+        border-bottom: 1px solid rgba(124,58,237,0.2);
+        padding-bottom: 30px;
+        margin-bottom: 50px;
+    }
+
+    .doc-title { font-size: 42px; font-weight: 800; margin-bottom: 10px; }
+    .doc-title span { color: var(--purple); }
+    
+    .doc-section { margin-bottom: 60px; }
+    .doc-section h2 { 
+        font-size: 24px; 
+        color: var(--purple); 
+        margin-bottom: 20px; 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+    }
+
+    .doc-content {
+        line-height: 1.8;
+        color: var(--text-muted);
+        font-size: 16px;
+    }
+
+    .feature-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .feature-list li {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.05);
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        color: #fff;
+    }
+
+    .feature-list strong { color: var(--purple); }
+
+    .alert-box {
+        background: rgba(124,58,237,0.1);
+        border-left: 4px solid var(--purple);
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--purple);
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="doc-container">
+    <div class="doc-wrapper">
+        <a href="{% url 'home' %}" class="back-btn">← Back to Home</a>
+        
+        <header class="doc-header">
+            <h1 class="doc-title">Guardian<span>+</span> Documentation</h1>
+            <p>Everything you need to know about setting up and using the Guardian+ app.</p>
+        </header>
+
+        <section class="doc-section">
+            <h2>01. Introduction</h2>
+            <div class="doc-content">
+                <p>Guardian+ ek advanced personal safety application hai jo users ko emergency situation mein immediate help provide karne ke liye design kiya gaya hai. Yeh app background services aur sensors ka use karke aapki safety ensure karta hai.</p>
+            </div>
+        </section>
+
+        <section class="doc-section">
+            <h2>02. Installation & Setup</h2>
+            <div class="doc-content">
+                <ul class="feature-list">
+                    <li><strong>Step 1:</strong> Website se APK download karein aur install karein.</li>
+                    <li><strong>Step 2:</strong> App open karke allow all permissions</li>
+                    <li><strong>Step 3:</strong> Allow display over other apps, so that touch can work.</li>
+                    <li><strong>Step 4:</strong> Battery optimization - select do not optimize.</li>
+                    <li><strong>Step 5:</strong>Fill the deatils in profile section.</li>
+                </ul>
+                <div class="alert-box">
+                    <strong>Note:</strong> Android 6.0+ devices par "Battery Optimization" ko disable karna zaroori hai taaki background services sahi se kaam karein.
+                </div>
+            </div>
+        </section>
+
+        <section class="doc-section">
+            <h2>03. Core Features</h2>
+            <div class="doc-content">
+                <ul class="feature-list">
+                    <li><strong>when you on the guardian mode after all permission setup , there is blue dot get visible in your screen tap that 5 times :</strong>to share Real-time GPS coordinates with battery status to your contacts.</li>
+                    <li><strong>Shake you mobile 2 3 times call will redirect:</strong> Emergency mein phone shake karne par automatically preset number par call lag jati hai.</li>
+                    <li><strong>set your on word for recording and then whenever you say that word recording get start, and for off the recording , turn off the guardain mode:</strong> Situation detect hote hi app background mein audio record karna shuru kar deta hai.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="doc-section">
+            <h2>04. Privacy & Permissions</h2>
+            <div class="doc-content">
+                <p>Humari priority aapka data secure rakhna hai. Guardian+ wahi data access karta hai jo emergency alerts ke liye zaroori ho:</p>
+                <ul>
+                    <li>Location: Emergency alert mein position batane ke liye.</li>
+                    <li>SMS: Bina internet ke contacts ko message bhejne ke liye.</li>
+                    <li>Accessibility: Background triggers ko monitor karne ke liye.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
